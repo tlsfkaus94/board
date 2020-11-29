@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.web.mapper.BoardMapper">
+
+    <resultMap type="Board" id="BoardResultMap">
+        <result property="num" column="bNum" />
+        <result property="kind" column="bKind" />
+        <result property="content" column="bContent" />
+        <result property="title" column="bTitle" />
+        <result property="regname" column="bRegname" />
+        <result property="regdate" column="bRegdate" />
+        <result property="modname" column="bModname" />
+        <result property="moddate" column="bModdate" />
+    </resultMap>
+    
+
+
+	<!-- 게시판 목록 -->
+        <select id="board_list" resultType="com.study.web.vo.Board">
+        SELECT *FROM BOARD
+        ORDER BY bNum DESC 
+        </select>
+    
+
+
+	
+	<!-- 게시판 글 읽기 -->
+	<select resultType="com.study.web.vo.Board" parameterType="int" id="board_read"> 
+	SELECT * FROM Board  
+	WHERE bNum = #{bNum} 
+	</select>
+	
+	<!-- 게시판 글 작성 -->
+	<insert id="board_write">
+		INSERT INTO BOARD (bKind, bContent,
+		bTitle, bRegname)
+		VALUES (#{bKind}, #{bContent},
+		#{bTitle}, #{bRegname})
+	</insert>
+	
+	<!-- 게시판 글 수정 -->
+	<update id="board_update" parameterType="com.study.web.vo.Board">
+		UPDATE BOARD
+		SET bTitle = #{bTitle},
+		bContent = #{bContent},
+		bKind = #{bKind},
+		bModname = #{bModname},
+		bModdate = NOW()
+		WHERE bNum = #{bNum}
+	</update>
+
+	<!-- 게시판 글 삭제 -->
+	<delete id="board_delete" parameterType="int">
+		DELETE
+		FROM BOARD
+		WHERE bNum = #{bNum}
+	</delete>
+ 
+</mapper>
